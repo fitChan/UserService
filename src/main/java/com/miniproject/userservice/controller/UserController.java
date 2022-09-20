@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController @RequiredArgsConstructor
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/user-service")
 public class UserController {
 
@@ -26,7 +27,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user){
+    public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -41,7 +42,8 @@ public class UserController {
 
     @GetMapping("/health_check")
     public String check() {
-        return String.format("Port : %s  is ON", env.getProperty("local.server.port"));
+        return String.format("Port : %s  is ON",
+                env.getProperty("local.server.port"));
     }
 
     @GetMapping("/welcome")
@@ -51,7 +53,7 @@ public class UserController {
 
 
     @GetMapping("/users")
-    public ResponseEntity<List<ResponseUser>> getUser(){
+    public ResponseEntity<List<ResponseUser>> getUser() {
         Iterable<UserEntity> userByAll = userService.getUserByAll();
         List<ResponseUser> result = new ArrayList<>();
 
@@ -61,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<?> getByUserId(@PathVariable("userId") String userId){
+    public ResponseEntity<?> getByUserId(@PathVariable("userId") String userId) {
         UserDto userByUserId = userService.getUserByUserId(userId);
         ResponseUser responseUser = new ModelMapper().map(userByUserId, ResponseUser.class);
         return ResponseEntity.status(200).body(responseUser);
